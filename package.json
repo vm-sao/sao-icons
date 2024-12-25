@@ -1,18 +1,110 @@
 {
-  "name": "@sao-icons/source",
-  "version": "0.0.0",
+  "name": "@sao-icons/workspace",
+  "version": "0.0.1",
   "license": "MIT",
-  "scripts": {},
-  "private": true,
-  "dependencies": {},
+  "scripts": {
+    "prepare": "husky"
+  },
+  "author": "Elias Vinh",
+  "homepage": "https://github.com/vm-sao/sao-icons",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vm-sao/sao-icons.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vm-sao/sao-icons/issues",
+    "email": "anlalayker@gmail.com"
+  },
+  "keywords": [
+    "vm-sao",
+    "sao-icons"
+  ],
   "devDependencies": {
-    "@nx/js": "20.3.0",
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@nx/eslint": "^20.3.0",
+    "@nx/eslint-plugin": "^20.3.0",
+    "@nx/js": "^20.3.0",
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
-    "nx": "20.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
+    "@typescript-eslint/utils": "^8.18.2",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "husky": "^9.1.7",
+    "jsonc-eslint-parser": "^2.4.0",
+    "lint-staged": "^15.2.11",
+    "nx": "^20.3.0",
+    "nx-stylelint": "^18.0.0",
     "prettier": "^2.6.2",
+    "prettier-eslint": "^16.3.0",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "stylelint": "^16.12.0",
+    "stylelint-config-standard-scss": "^14.0.0",
+    "stylelint-scss": "^6.10.0",
     "tslib": "^2.3.0",
-    "typescript": "~5.6.2"
-  }
+    "typescript": "~5.6.2",
+    "verdaccio": "^6.0.5"
+  },
+  "engines": {
+    "node": "^18 || ^20 || ^23",
+    "pnpm": "^8 || ^9"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 2,
+    "htmlWhitespaceSensitivity": "ignore",
+    "useTabs": false,
+    "plugins": [
+      "prettier-plugin-organize-imports"
+    ],
+    "semi": true,
+    "bracketSpacing": true,
+    "arrowParens": "avoid",
+    "trailingComma": "es5",
+    "bracketSameLine": true,
+    "printWidth": 80
+  },
+  "lint-staged": {
+    "*.{js,json,scss,css,html,md,ts}": [
+      "prettier --write"
+    ],
+    "*.{js,html,ts}": [
+      "eslint --fix"
+    ],
+    "*.{scss,css}": [
+      "stylelint --fix"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "type-enum": [
+        2,
+        "always",
+        [
+          "breaking",
+          "release",
+          "chore",
+          "ci",
+          "docs",
+          "feat",
+          "fix",
+          "perf",
+          "refactor",
+          "revert",
+          "style",
+          "test",
+          "bump"
+        ]
+      ]
+    }
+  },
+  "packageManager": "pnpm@9.10.0"
 }
