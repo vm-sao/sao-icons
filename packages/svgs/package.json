@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": false,
   "author": "Elias Vinh",
-  "description": "Package for sao-icons svgs",
+  "description": "SAO Package for getting svgs",
   "homepage": "https://github.com/vm-sao/sao-icons/svgs",
   "repository": {
     "type": "git",
