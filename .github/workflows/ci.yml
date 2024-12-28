@@ -54,7 +54,7 @@ jobs:
         if: env.affected_projects != ''
         run: |
           for project in $(echo "$affected_projects" | tr ',' '\n'); do
-            pnpm exec nx run $project:auto --dry-run
+            pnpm exec nx run $project:ci
           done
 
       # Empty changes
