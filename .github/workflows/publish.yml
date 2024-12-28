@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/**'
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    env:
+      NPM_REGISTRY: 'https://registry.npmjs.org/'  # Default npm registry
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}  # Add your npm token to GitHub secrets
+    steps:
+      # Checkout the repository
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Install pnpm
+      - uses: pnpm/action-setup@v4
+
+      # Cache node_modules
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      # Setup .npmrc file to publish to npm
+      - run: |
+          echo "registry=$NPM_REGISTRY" > ~/.npmrc
+          echo "//${{ github.actor }}:${{ secrets.NPM_TOKEN }}:registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+
+      # Install dependencies
+      - run: pnpm install --frozen-lockfile
+      - uses: nrwl/nx-set-shas@v4
+
+      # Detect affected projects
+      - name: Get affected projects
+        id: affected
+        run: |
+          AFFECTED_PROJECTS=$(pnpm exec nx show projects --affected)
+          echo "affected_projects=$AFFECTED_PROJECTS" >> $GITHUB_ENV
+
+      # Publish affected projects
+      - name: Run targets
+        if: env.affected_projects != ''
+        run: |
+          for project in $(echo "$affected_projects" | tr ',' '\n'); do
+            pnpm exec nx run $project:auto
+          done

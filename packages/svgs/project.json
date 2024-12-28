@@ -1,0 +1,39 @@
+{
+  "name": "svgs",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/svgs",
+  "projectType": "library",
+  "tags": ["sao-icons", "svgs"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf dist/packages/svgs",
+          "mkdir -p dist/packages/svgs",
+          "rsync -a --exclude='project.json' packages/svgs/ dist/packages/svgs/"
+        ],
+        "parallel": false
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "cd dist/packages/svgs && pnpm publish --access public --no-git-checks"
+        ],
+        "parallel": false
+      }
+    },
+    "auto": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "pnpm nx affected --target=build --parallel=false",
+          "pnpm nx affected --target=publish --parallel=false"
+        ],
+        "parallel": false
+      }
+    }
+  }
+}
