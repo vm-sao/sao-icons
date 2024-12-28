@@ -34,6 +34,16 @@
         ],
         "parallel": false
       }
+    },
+    "ci": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "pnpm nx affected --target=build --parallel=false",
+          "pnpm nx affected --target=publish --parallel=false --dry-run"
+        ],
+        "parallel": false
+      }
     }
   }
 }
