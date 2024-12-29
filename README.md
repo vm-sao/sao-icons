@@ -24,13 +24,9 @@ pnpm install @sao-icons/styles
 
 ## Usage
 
-To use the SAO Icons, you can import the `sao.css` file in your project:
-
 ```scss
 @import '@sao-icons/styles/scss';
 ```
-
-You can also import the individual styles for each icon:
 
 ```css
 @import '@sao-icons/styles';
