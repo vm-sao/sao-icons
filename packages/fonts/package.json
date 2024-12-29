@@ -1,6 +1,6 @@
 {
   "name": "@sao-icons/fonts",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1",
   "private": false,
   "author": "Elias Vinh",
   "description": "SAO Package for getting svgs",

@@ -29,8 +29,8 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "pnpm nx affected --target=build --parallel=false",
-          "pnpm nx affected --target=publish --parallel=false"
+          "pnpm nx build svgs --parallel=false",
+          "pnpm nx publish svgs --parallel=false"
         ],
         "parallel": false
       }
@@ -39,8 +39,8 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "pnpm nx affected --target=build --parallel=false",
-          "pnpm nx affected --target=publish --parallel=false --dry-run"
+          "pnpm nx build svgs --parallel=false",
+          "pnpm nx publish svgs --parallel=false --dry-run"
         ],
         "parallel": false
       }

@@ -29,8 +29,8 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "pnpm nx affected --target=build --parallel=false",
-          "pnpm nx affected --target=publish --parallel=false"
+          "pnpm nx build fonts --parallel=false",
+          "pnpm nx publish fonts --parallel=false"
         ],
         "parallel": false
       }
@@ -39,8 +39,8 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "pnpm nx affected --target=build --parallel=false",
-          "pnpm nx affected --target=publish --parallel=false --dry-run"
+          "pnpm nx build fonts --parallel=false",
+          "pnpm nx publish fonts --parallel=false --dry-run"
         ],
         "parallel": false
       }
