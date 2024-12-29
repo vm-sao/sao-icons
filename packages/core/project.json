@@ -1,18 +1,18 @@
 {
-  "name": "styles",
+  "name": "core",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/styles",
+  "sourceRoot": "packages/core",
   "projectType": "library",
-  "tags": ["sao-icons", "styles"],
+  "tags": ["sao-icons", "core"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "rm -rf dist/packages/styles",
-          "mkdir -p dist/packages/styles",
-          "rsync -a --exclude='project.json' --exclude='main.mjs' packages/styles/ dist/packages/styles/",
-          "node packages/styles/main.mjs"
+          "rm -rf dist/packages/core",
+          "mkdir -p dist/packages/core",
+          "rsync -a --exclude='project.json' --exclude='main.mjs' packages/core/ dist/packages/core/",
+          "node packages/core/main.mjs"
         ],
         "parallel": false
       }
@@ -21,7 +21,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "cd dist/packages/styles && pnpm publish --access public --no-git-checks"
+          "cd dist/packages/core && pnpm publish --access public --no-git-checks"
         ],
         "parallel": false
       }
@@ -30,8 +30,8 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "pnpm nx build styles --parallel=false",
-          "pnpm nx publish styles --parallel=false"
+          "pnpm nx build core --parallel=false",
+          "pnpm nx publish core --parallel=false"
         ],
         "parallel": false
       }
@@ -40,8 +40,8 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "pnpm nx build styles --parallel=false",
-          "pnpm nx publish styles --parallel=false --dry-run"
+          "pnpm nx build core --parallel=false",
+          "pnpm nx publish core --parallel=false --dry-run"
         ],
         "parallel": false
       }

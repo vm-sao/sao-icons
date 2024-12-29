@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
   const svgDir = join(__dirname, '../', 'svgs');
-  const outputDir = join(__dirname, '../../', 'dist/packages/styles');
+  const outputDir = join(__dirname, '../../', 'dist/packages/core');
   const fontName = 'sao';
   const kindFolders = ['filtered', 'outlined'];
 

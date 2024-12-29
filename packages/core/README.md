@@ -1,35 +1,35 @@
-# SAO Icons Styles
+# SAO Icons Core
 
 This package contains the Styling for the SAO Icons.
 
 ## Installation
 
-To install the SAO Icons Styles, you can use the following command:
+To install the SAO Icons Core, you can use the following command:
 
 ```bash
-npm install @sao-icons/styles
+npm install @sao-icons/core
 ```
 
 or
 
 ```bash
-yarn add @sao-icons/styles
+yarn add @sao-icons/core
 ```
 
 or
 
 ```bash
-pnpm install @sao-icons/styles
+pnpm install @sao-icons/core
 ```
 
 ## Usage
 
 ```scss
-@import '@sao-icons/styles/scss';
+@import '@sao-icons/core/scss';
 ```
 
 ```css
-@import '@sao-icons/styles';
+@import '@sao-icons/core';
 ```
 
 ## Contributing

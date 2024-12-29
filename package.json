@@ -9,7 +9,7 @@
   "homepage": "https://github.com/vm-sao/sao-icons",
   "directories": {
     "svgs": "packages/svgs",
-    "styles": "packages/styles"
+    "core": "packages/core"
   },
   "repository": {
     "type": "git",

@@ -7,29 +7,29 @@ SAO Icons is a set of icons designed to be used in SAO projects.
 To install the SAO Icons, you can use the following command:
 
 ```bash
-npm install @sao-icons/styles
+npm install @sao-icons/core
 ```
 
 or
 
 ```bash
-yarn add @sao-icons/styles
+yarn add @sao-icons/core
 ```
 
 or
 
 ```bash
-pnpm install @sao-icons/styles
+pnpm install @sao-icons/core
 ```
 
 ## Usage
 
 ```scss
-@import '@sao-icons/styles/scss';
+@import '@sao-icons/core/scss';
 ```
 
 ```css
-@import '@sao-icons/styles';
+@import '@sao-icons/core';
 ```
 
 ## Contributing
