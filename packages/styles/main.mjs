@@ -47,7 +47,7 @@ import { fileURLToPath } from 'url';
           .replace(/"/g, "'"); // Replace double quotes with single quotes for CSS compatibility
         css += `
 .sao-icon.${name} {
-  --sao-icon-mask: url('data:image/svg+xml,${encodeURIComponent(minified)}');
+  --sao-icon-mask: url("data:image/svg+xml,${encodeURIComponent(minified)}");
 }
           `;
       });
