@@ -1,0 +1,49 @@
+{
+  "name": "fonts",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/fonts",
+  "projectType": "library",
+  "tags": ["sao-icons", "fonts"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf dist/packages/fonts",
+          "mkdir -p dist/packages/fonts",
+          "node packages/fonts/main.js"
+        ],
+        "parallel": false
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "cd dist/packages/fonts && pnpm publish --access public --no-git-checks"
+        ],
+        "parallel": false
+      }
+    },
+    "auto": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "pnpm nx affected --target=build --parallel=false",
+          "pnpm nx affected --target=publish --parallel=false"
+        ],
+        "parallel": false
+      }
+    },
+    "ci": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "pnpm nx affected --target=build --parallel=false",
+          "pnpm nx affected --target=publish --parallel=false --dry-run"
+        ],
+        "parallel": false
+      }
+    }
+  }
+}
