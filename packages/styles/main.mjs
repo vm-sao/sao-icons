@@ -1,8 +1,4 @@
-import {
-  readdirSync,
-  readFileSync,
-  writeFileSync,
-} from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -40,7 +36,7 @@ import { fileURLToPath } from 'url';
         const name = `${fontName}_${kindFolder}_${objectFolder}_${basename(
           svgFilePath,
           '.svg'
-        )}`;
+        )}`.replace(/_/g, '-');
         const content = readFileSync(svgFilePath, 'utf8');
 
         // Minify the SVG content by removing line breaks and extra spaces
