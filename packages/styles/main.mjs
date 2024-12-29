@@ -1,5 +1,4 @@
 import {
-  copyFileSync,
   readdirSync,
   readFileSync,
   writeFileSync,
@@ -7,14 +6,11 @@ import {
 import { basename, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const svgDir = join(__dirname, '../', 'svgs');
-const outputDir = join(__dirname, '../../', 'dist/packages/fonts');
-const packageJson = join(__dirname, './', 'package.template.json');
-const readme = join(__dirname, './', 'README.md');
-
-function buildIcons() {
+(() => {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  const svgDir = join(__dirname, '../', 'svgs');
+  const outputDir = join(__dirname, '../../', 'dist/packages/styles');
   const fontName = 'sao';
   const kindFolders = ['filtered', 'outlined'];
 
@@ -62,16 +58,6 @@ function buildIcons() {
     });
   });
 
-  writeFileSync(join(outputDir, 'sao.css'), css);
-}
-
-function buildFiles() {
-  writeFileSync(
-    join(outputDir, 'package.json'),
-    readFileSync(packageJson, 'utf8')
-  );
-  copyFileSync(readme, join(outputDir, 'README.md'));
-}
-
-buildIcons();
-buildFiles();
+  writeFileSync(join(outputDir, 'index.css'), css);
+  writeFileSync(join(outputDir, 'index.scss'), css);
+})();

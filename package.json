@@ -7,6 +7,10 @@
   },
   "author": "Elias Vinh",
   "homepage": "https://github.com/vm-sao/sao-icons",
+  "directories": {
+    "svgs": "packages/svgs",
+    "styles": "packages/styles"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/vm-sao/sao-icons.git"

@@ -1,13 +1,14 @@
 {
   "name": "@sao-icons/svgs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": false,
   "author": "Elias Vinh",
-  "description": "SAO Package for getting svgs",
+  "description": "SAO Icons Package for getting svg files",
   "homepage": "https://github.com/vm-sao/sao-icons/svgs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vm-sao/sao-icons.git"
+    "url": "https://github.com/vm-sao/sao-icons.git",
+    "directory": "packages/svgs"
   },
   "bugs": {
     "url": "https://github.com/vm-sao/sao-icons/issues",
@@ -17,5 +18,9 @@
     "vm-sao",
     "sao-icons",
     "sao-icons-svgs"
-  ]
+  ],
+  "exports": {
+    "./filtered": "./filtered",
+    "./outlined": "./outlined"
+  }
 }
