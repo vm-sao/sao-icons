@@ -1,10 +1,10 @@
 {
-  "name": "@sao-icons/svgs",
-  "version": "0.0.2",
+  "name": "@sao-icons/fonts",
+  "version": "0.0.1",
   "private": false,
   "author": "Elias Vinh",
   "description": "SAO Package for getting svgs",
-  "homepage": "https://github.com/vm-sao/sao-icons/svgs",
+  "homepage": "https://github.com/vm-sao/sao-icons/fonts",
   "repository": {
     "type": "git",
     "url": "https://github.com/vm-sao/sao-icons.git"
@@ -16,6 +16,7 @@
   "keywords": [
     "vm-sao",
     "sao-icons",
-    "sao-icons-svgs"
-  ]
+    "sao-icons-fonts"
+  ],
+  "main": "main.mjs"
 }

@@ -46,7 +46,7 @@ jobs:
       - name: Get affected projects
         id: affected
         run: |
-          AFFECTED_PROJECTS=$(pnpm exec nx show projects --affected)
+          AFFECTED_PROJECTS=$(pnpm exec nx show projects --affected | tr '\n' ',')
           echo "affected_projects=$AFFECTED_PROJECTS" >> $GITHUB_ENV
 
       # Run affected projects with targets

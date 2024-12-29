@@ -1,17 +1,17 @@
 {
-  "name": "svgs",
+  "name": "fonts",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/svgs",
+  "sourceRoot": "packages/fonts",
   "projectType": "library",
-  "tags": ["sao-icons", "svgs"],
+  "tags": ["sao-icons", "fonts"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "rm -rf dist/packages/svgs",
-          "mkdir -p dist/packages/svgs",
-          "rsync -a --exclude='project.json' packages/svgs/ dist/packages/svgs/"
+          "rm -rf dist/packages/fonts",
+          "mkdir -p dist/packages/fonts",
+          "node packages/fonts/main.mjs"
         ],
         "parallel": false
       }
@@ -20,7 +20,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "cd dist/packages/svgs && pnpm publish --access public --no-git-checks"
+          "cd dist/packages/fonts && pnpm publish --access public --no-git-checks"
         ],
         "parallel": false
       }
@@ -29,8 +29,8 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "pnpm nx build svgs --parallel=false",
-          "pnpm nx publish svgs --parallel=false"
+          "pnpm nx build fonts --parallel=false",
+          "pnpm nx publish fonts --parallel=false"
         ],
         "parallel": false
       }
@@ -39,8 +39,8 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "pnpm nx build svgs --parallel=false",
-          "pnpm nx publish svgs --parallel=false --dry-run"
+          "pnpm nx build fonts --parallel=false",
+          "pnpm nx publish fonts --parallel=false --dry-run"
         ],
         "parallel": false
       }
