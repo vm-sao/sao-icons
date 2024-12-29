@@ -11,7 +11,7 @@
         "commands": [
           "rm -rf dist/packages/fonts",
           "mkdir -p dist/packages/fonts",
-          "node packages/fonts/main.js"
+          "node packages/fonts/main.mjs"
         ],
         "parallel": false
       }

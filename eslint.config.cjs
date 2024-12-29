@@ -1,9 +1,11 @@
 const nx = require('@nx/eslint-plugin');
+const { FlatCompat } = require('@eslint/eslintrc');
 
 module.exports = [
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
+  ...new FlatCompat().extends('plugin:prettier/recommended'),
   {
     ignores: ['**/dist'],
   },
@@ -12,16 +14,6 @@ module.exports = [
     rules: {
       '@nx/enforce-module-boundaries': 0,
     },
-  },
-  {
-    files: ['**/*.ts', '**/*.tsx'],
-    extends: ['plugin:@nx/typescript', 'plugin:prettier/recommended'],
-    rules: {},
-  },
-  {
-    files: ['*.js', '*.jsx'],
-    extends: ['plugin:@nx/javascript'],
-    rules: {},
   },
   {
     files: ['*.json'],

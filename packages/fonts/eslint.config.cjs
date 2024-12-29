@@ -3,10 +3,6 @@ const baseConfig = require('../../eslint.config.cjs');
 module.exports = [
   ...baseConfig,
   {
-    files: ["*.js", "*.jsx"],
-    rules: {}
-  },
-  {
     files: ['**/*.json'],
     rules: {
       '@nx/dependency-checks': [
