@@ -1,0 +1,32 @@
+{
+  "name": "@sao-icons/styles",
+  "version": "0.0.1",
+  "private": false,
+  "author": "Elias Vinh",
+  "license": "MIT",
+  "description": "SAO Icons Package for getting styling (css, scss, sass)",
+  "homepage": "https://github.com/vm-sao/sao-icons",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vm-sao/sao-icons.git",
+    "directory": "packages/styles"
+  },
+  "bugs": {
+    "url": "https://github.com/vm-sao/sao-icons/issues",
+    "email": "anlalayker@gmail.com"
+  },
+  "keywords": [
+    "vm-sao",
+    "sao-icons",
+    "sao-icons-styles"
+  ],
+  "exports": {
+    ".": "./index.css",
+    "./index": "./index.css",
+    "./index.css": "./index.css",
+    "./index.scss": "./index.scss",
+    "./css": "./index.css",
+    "./scss": "./index.scss",
+    "./sass": "./index.scss"
+  }
+}

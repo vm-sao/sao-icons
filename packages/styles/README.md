@@ -1,10 +1,10 @@
-# SAO Icons
+# SAO Icons Styles
 
-SAO Icons is a set of icons designed to be used in SAO projects.
+This package contains the Styling for the SAO Icons.
 
 ## Installation
 
-To install the SAO Icons, you can use the following command:
+To install the SAO Icons Styles, you can use the following command:
 
 ```bash
 npm install @sao-icons/styles
@@ -24,7 +24,7 @@ pnpm install @sao-icons/styles
 
 ## Usage
 
-To use the SAO Icons, you can import the `sao.css` file in your project:
+To use the SAO Icons Styles, you can import the `sao.css` file in your project:
 
 ```scss
 @import '@sao-icons/styles/scss';
