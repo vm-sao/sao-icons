@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url';
   const outputDir = join(__dirname, '../../', 'dist/packages/core');
   const fontName = 'sao';
   const kindFolders = ['filtered', 'outlined'];
-
+  let variables = ``;
   let css = `.sao-icon {
   display: inline-block;
   width: var(--sao-icon-size, 24px);
@@ -45,15 +45,18 @@ import { fileURLToPath } from 'url';
           .replace(/\s+/g, ' ') // Remove extra spaces
           .replace(/>\s+</g, '><') // Remove spaces between tags
           .replace(/"/g, "'"); // Replace double quotes with single quotes for CSS compatibility
+        variables += `
+  --sao-icon-${name}: url("data:image/svg+xml,${encodeURIComponent(minified)}");`;
         css += `
 .sao-icon.${name} {
-  --sao-icon-mask: url("data:image/svg+xml,${encodeURIComponent(minified)}");
+  --sao-icon-mask: var(--sao-icon-${name});
 }
           `;
       });
     });
   });
+  const root = `:root {${variables}\n}`;
 
-  writeFileSync(join(outputDir, 'index.css'), css);
-  writeFileSync(join(outputDir, 'index.scss'), css);
+  writeFileSync(join(outputDir, 'index.css'), `${root}\n${css}`);
+  writeFileSync(join(outputDir, 'index.scss'), `${root}\n${css}`);
 })();
