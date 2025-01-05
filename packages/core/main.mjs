@@ -33,7 +33,7 @@ import { fileURLToPath } from 'url';
       const childFolderPath = join(kindFolderPath, objectFolder);
       readdirSync(childFolderPath).forEach((file, index) => {
         const svgFilePath = join(childFolderPath, file);
-        const name = `${fontName}_${kindFolder}_${objectFolder}_${basename(
+        const name = `${fontName}_icon_${kindFolder}_${objectFolder}_${basename(
           svgFilePath,
           '.svg'
         )}`.replace(/_/g, '-');
@@ -46,10 +46,10 @@ import { fileURLToPath } from 'url';
           .replace(/>\s+</g, '><') // Remove spaces between tags
           .replace(/"/g, "'"); // Replace double quotes with single quotes for CSS compatibility
         variables += `
-  --sao-icon-${name}: url("data:image/svg+xml,${encodeURIComponent(minified)}");`;
+  --${name}: url("data:image/svg+xml,${encodeURIComponent(minified)}");`;
         css += `
 .sao-icon.${name} {
-  --sao-icon-mask: var(--sao-icon-${name});
+  --sao-icon-mask: var(--${name});
 }
           `;
       });
