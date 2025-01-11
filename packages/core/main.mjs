@@ -23,7 +23,6 @@ import { fileURLToPath } from 'url';
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
-  background-color: var(--sao-icon-color, black);
 }
     `;
 
