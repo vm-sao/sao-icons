@@ -1,0 +1,27 @@
+{
+  "name": "@sao-icons/types",
+  "version": "0.0.1",
+  "private": false,
+  "author": "Elias Vinh",
+  "license": "MIT",
+  "description": "SAO Icons Package for getting typing",
+  "homepage": "https://github.com/vm-sao/sao-icons",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vm-sao/sao-icons.git",
+    "directory": "packages/types"
+  },
+  "bugs": {
+    "url": "https://github.com/vm-sao/sao-icons/issues",
+    "email": "anlalayker@gmail.com"
+  },
+  "keywords": [
+    "vm-sao",
+    "sao-icons",
+    "sao-icons-types"
+  ],
+  "exports": {
+    ".": "./index.ts",
+    "./index": "./index.ts"
+  }
+}
