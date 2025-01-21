@@ -52,7 +52,7 @@ jobs:
           fi
 
           # Sanitize and convert to JSON array for GitHub Actions
-          affected_json=$(echo "$affected_dirs" | tr ' ' '\n' | jq -R . | jq -s .)
+          affected_json=$(echo "$affected_dirs" | tr ' ' '\n' | jq -R . | jq -s . | tr -d '\n' | tr -d '\r')
           echo "Affected Projects: $affected_json"
           echo "affected_projects=$affected_json" >> $GITHUB_ENV
 
