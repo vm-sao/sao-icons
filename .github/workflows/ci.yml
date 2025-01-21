@@ -32,11 +32,20 @@ jobs:
       - name: Set matrix
         id: set-matrix
         run: |
-          CHANGES=$(echo '${{ steps.changed-files.outputs.all_changed_files }}' | jq -c '[
-            .[]
-            | capture("^packages/(?<package>[^/]+)/")
-            | .package
-          ] | unique')
+          # Debug output
+          echo "Changed files output: ${{ steps.changed-files.outputs.all_changed_files }}"
+
+          # Parse JSON and extract package names
+          CHANGES=$(echo '${{ steps.changed-files.outputs.all_changed_files }}' | jq -r '
+            fromjson |
+            map(
+              capture("^packages/(?<package>[^/]+)")
+              | .package
+            ) |
+            unique |
+            tojson
+          ')
+          echo "Extracted changes: ${CHANGES}"
           echo "matrix=${CHANGES}" >> $GITHUB_OUTPUT
 
   main:
