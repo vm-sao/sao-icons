@@ -47,10 +47,18 @@ jobs:
         id: detect-projects
         run: |
           # Find changes in packages directory
-          affected_dirs=$(git diff --name-only HEAD~1 HEAD | grep '^packages/' | cut -d '/' -f 2 | sort | uniq)
+          affected_dirs=$(git diff --name-only HEAD~1 HEAD | grep '^packages/' | cut -d '/' -f 2 | sort | uniq | xargs)
 
-          # Convert to JSON array for GitHub Actions output
-          affected_json=$(echo "$affected_dirs" | jq -R . | jq -s .)
+          # Handle empty results
+          if [ -z "$affected_dirs" ]; then
+          echo "No affected projects found."
+          echo "affected_projects=[]" >> $GITHUB_ENV
+          exit 0
+          fi
+
+          # Sanitize and convert to JSON array for GitHub Actions
+          affected_json=$(echo "$affected_dirs" | tr ' ' '\n' | jq -R . | jq -s .)
+          echo "Affected Projects: $affected_json"
           echo "affected_projects=$affected_json" >> $GITHUB_ENV
 
       # Run CI for each affected project
@@ -62,9 +70,3 @@ jobs:
             echo "Running CI for project: $project"
             pnpm exec nx run "$project:ci"
           done
-
-      # Ignore CI for packages that are not affected
-      - name: Ignore CI
-        if: env.affected_projects == '[]'
-        run: |
-          echo "No affected projects found. Skipping CI."
