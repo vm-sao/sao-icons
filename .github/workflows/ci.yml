@@ -85,7 +85,8 @@ jobs:
         if: env.affected_projects != '[]'
         run: |
           echo "Affected Projects: ${{ env.affected_projects }}"
-          for project in $(echo "${{ env.affected_projects }}" | jq -r '.[]'); do
+          cleaned_projects=$(echo "${{ env.affected_projects }}" | jq -c) # Sanitize input
+          for project in $(echo "$cleaned_projects" | jq -r '.[]'); do
             echo "Running CI for project: $project"
             pnpm exec nx run "$project:ci"
           done
