@@ -52,8 +52,10 @@ jobs:
       - name: Run CI
         if: env.affected_projects != '[]'
         run: |
-          for project in $(echo ${{ env.affected_projects }} | jq -r '.[]'); do
-            pnpm exec nx run "$project:auto" || exit 1
+          echo "Affected Projects: ${{ env.affected_projects }}"
+          for project in $(echo "${{ env.affected_projects }}" | jq -r '.[]'); do
+            echo "Publishing project: $project"
+            pnpm exec nx run "$project:auto"
           done
 
       # Ignore CI for packages that are not affected
