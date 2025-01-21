@@ -46,22 +46,22 @@ jobs:
 
           # Handle empty results
           if [ -z "$affected_dirs" ]; then
-          echo "No affected projects found."
-          echo "affected_projects=[]" >> $GITHUB_ENV
-          exit 0
+            echo "No affected projects found."
+            echo "affected_projects=[]" >> $GITHUB_ENV
+            exit 0
           fi
 
           # Sanitize and convert to JSON array for GitHub Actions
           affected_json=$(echo "$affected_dirs" | tr ' ' '\n' | jq -R . | jq -s . | tr -d '\n' | tr -d '\r')
+          echo "affected_projects=$affected_json" >> $GITHUB_ENV
           echo "Affected Projects: $affected_json"
-          echo "affected_projects=$(echo "$affected_json" | jq -c)" >> $GITHUB_ENV
 
-      # Run CI for each affected project
-      - name: Publishing
+      # Publish affected projects
+      - name: Publish
         if: env.affected_projects != '[]'
         run: |
           echo "Affected Projects: ${{ env.affected_projects }}"
           for project in $(echo "${{ env.affected_projects }}" | jq -r '.[]'); do
-            echo "Publishing project: $project"
+            echo "Running CI for project: $project"
             pnpm exec nx run "$project:auto"
           done

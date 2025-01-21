@@ -58,8 +58,27 @@ jobs:
 
           # Sanitize and convert to JSON array for GitHub Actions
           affected_json=$(echo "$affected_dirs" | tr ' ' '\n' | jq -R . | jq -s . | tr -d '\n' | tr -d '\r')
-          echo "Affected Projects: $affected_json"
           echo "affected_projects=$(echo "$affected_json" | jq -c)" >> $GITHUB_ENV
+          echo "Affected Projects: affected_projects"
+
+      # Detect affected projects
+      - name: Detect Affected Projects
+        id: detect-projects
+        run: |
+          # Find changes in packages directory
+          affected_dirs=$(git diff --name-only HEAD~1 HEAD | grep '^packages/' | cut -d '/' -f 2 | sort | uniq | xargs)
+
+          # Handle empty results
+          if [ -z "$affected_dirs" ]; then
+            echo "No affected projects found."
+            echo "affected_projects=[]" >> $GITHUB_ENV
+            exit 0
+          fi
+
+          # Sanitize and convert to JSON array for GitHub Actions
+          affected_json=$(echo "$affected_dirs" | tr ' ' '\n' | jq -R . | jq -s . | tr -d '\n' | tr -d '\r')
+          echo "affected_projects=$affected_json" >> $GITHUB_ENV
+          echo "Affected Projects: $affected_json"
 
       # Run CI for each affected project
       - name: Run CI
