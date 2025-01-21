@@ -32,14 +32,10 @@ jobs:
         id: set-matrix
         run: |
           CHANGES=$(echo '${{ steps.changed-files.outputs.all_changed_files }}' | jq -c '[
-            . | map(
-              select(startswith("packages/"))
-              | split("/")[1]
-              | select(. != null)
-            )
-            | unique
-            | .[]
-          ]')
+            .[]
+            | capture("^packages/(?<package>[^/]+)/")
+            | .package
+          ] | unique')
           echo "matrix=${CHANGES}" >> $GITHUB_OUTPUT
 
   main:
