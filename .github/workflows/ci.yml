@@ -13,7 +13,38 @@ permissions:
   contents: read
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v42
+        with:
+          files: packages/**
+          json: true
+
+      - name: Set matrix
+        id: set-matrix
+        run: |
+          CHANGES=$(echo '${{ steps.changed-files.outputs.all_changed_files }}' | jq -c '[
+            . | map(
+              select(startswith("packages/"))
+              | split("/")[1]
+              | select(. != null)
+            )
+            | unique
+            | .[]
+          ]')
+          echo "matrix=${CHANGES}" >> $GITHUB_OUTPUT
+
   main:
+    needs: detect-changes
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -42,66 +73,11 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - uses: nrwl/nx-set-shas@v4
 
-      # Detect affected projects
-      - name: Detect Affected Projects
-        id: detect-projects
+      # Run package-specific CI for changed packages
+      - name: Run project CI
+        if: needs.detect-changes.outputs.matrix != '[]'
         run: |
-          # Find changes in packages directory
-          affected_dirs=$(git diff --name-only HEAD~1 HEAD | grep '^packages/' | cut -d '/' -f 2 | sort | uniq | xargs)
-
-          # Handle empty results
-          if [ -z "$affected_dirs" ]; then
-          echo "No affected projects found."
-          echo "affected_projects=[]" >> $GITHUB_ENV
-          exit 0
-          fi
-
-          # Sanitize and convert to JSON array for GitHub Actions
-          affected_json=$(echo "$affected_dirs" | tr ' ' '\n' | jq -R . | jq -s . | tr -d '\n' | tr -d '\r')
-          echo "affected_projects=$(echo "$affected_json" | jq -c)" >> $GITHUB_ENV
-          echo "Affected Projects: affected_projects"
-
-      # Detect affected projects
-      - name: Detect Affected Projects
-        id: detect-projects
-        run: |
-          # Find changes in packages directory
-          affected_dirs=$(git diff --name-only HEAD~1 HEAD | grep '^packages/' | cut -d '/' -f 2 | sort | uniq | xargs)
-
-          # Handle empty results
-          if [ -z "$affected_dirs" ]; then
-            echo "No affected projects found."
-            echo "affected_projects=[]" >> $GITHUB_ENV
-            exit 0
-          fi
-
-          # Sanitize and convert to JSON array for GitHub Actions
-          affected_json=$(echo "$affected_dirs" | tr ' ' '\n' | jq -R . | jq -s .)
-          echo "affected_projects=$affected_json" >> $GITHUB_ENV
-          echo "Affected Projects: $affected_json"
-
-
-      # CI for affected projects
-      - name: CI
-        if: env.affected_projects != '[]'
-        run: |
-          echo "Raw Affected Projects: ${{ env.affected_projects }}"
-
-          # Ensure that the affected_projects variable is correctly formatted
-          cleaned_projects=$(echo "${{ env.affected_projects }}" | jq -c)
-
-          # Debug output to check cleaned_projects
-          echo "Cleaned Affected Projects: $cleaned_projects"
-
-          # Check for empty cleaned_projects
-          if [ "$cleaned_projects" == "[]" ]; then
-            echo "No cleaned projects to publish."
-            exit 0
-          fi
-
-          # Process each project
-          for project in $(echo "$cleaned_projects" | jq -r '.[]'); do
-            echo "CI for packages/$project"
-            pnpm exec nx run "$project:ci"
+          for project in $(echo '${{needs.detect-changes.outputs.matrix}}' | jq -r '.[]'); do
+            echo "Running CI for packages/$project"
+            pnpm exec nx run $project:ci
           done
-

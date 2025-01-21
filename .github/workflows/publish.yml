@@ -12,20 +12,55 @@ permissions:
   contents: read
 
 jobs:
-  main:
+  detect-changes:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v42
+        with:
+          files: packages/**
+          json: true
+
+      - name: Set matrix
+        id: set-matrix
+        run: |
+          CHANGES=$(echo '${{ steps.changed-files.outputs.all_changed_files }}' | jq -c '[
+            . | map(
+              select(startswith("packages/"))
+              | split("/")[1]
+              | select(. != null)
+            )
+            | unique
+            | .[]
+          ]')
+          echo "matrix=${CHANGES}" >> $GITHUB_OUTPUT
+
+  main:
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 23.x]
     steps:
       # Checkout the repository
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       # Install pnpm
       - uses: pnpm/action-setup@v4
 
       # Cache node_modules
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
 
       # Setup .npmrc file to publish to npm
@@ -37,46 +72,11 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - uses: nrwl/nx-set-shas@v4
 
-      # Detect affected projects
-      - name: Detect Affected Projects
-        id: detect-projects
+      # Publishing changed packages
+      - name: Publishing changed packages
+        if: needs.detect-changes.outputs.matrix != '[]'
         run: |
-          # Find changes in packages directory
-          affected_dirs=$(git diff --name-only HEAD~1 HEAD | grep '^packages/' | cut -d '/' -f 2 | sort | uniq | xargs)
-
-          # Handle empty results
-          if [ -z "$affected_dirs" ]; then
-            echo "No affected projects found."
-            echo "affected_projects=[]" >> $GITHUB_ENV
-            exit 0
-          fi
-
-          # Sanitize and convert to JSON array for GitHub Actions
-          affected_json=$(echo "$affected_dirs" | tr ' ' '\n' | jq -R . | jq -s .)
-          echo "affected_projects=$affected_json" >> $GITHUB_ENV
-          echo "Affected Projects: $affected_json"
-
-
-      # Publish affected projects
-      - name: Publish
-        if: env.affected_projects != '[]'
-        run: |
-          echo "Raw Affected Projects: ${{ env.affected_projects }}"
-
-          # Ensure that the affected_projects variable is correctly formatted
-          cleaned_projects=$(echo "${{ env.affected_projects }}" | jq -c)
-
-          # Debug output to check cleaned_projects
-          echo "Cleaned Affected Projects: $cleaned_projects"
-
-          # Check for empty cleaned_projects
-          if [ "$cleaned_projects" == "[]" ]; then
-            echo "No cleaned projects to publish."
-            exit 0
-          fi
-
-          # Process each project
-          for project in $(echo "$cleaned_projects" | jq -r '.[]'); do
-            echo "Publishing @sao-ui/$project"
-            pnpm exec nx run "$project:auto"
+          for project in $(echo '${{needs.detect-changes.outputs.matrix}}' | jq -r '.[]'); do
+            echo "Publish @sao-icons/$project"
+            pnpm exec nx run $project:auto
           done
