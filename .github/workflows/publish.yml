@@ -35,17 +35,13 @@ jobs:
             map(
               capture("^packages/(?<package>[^/]+)").package
             ) |
-            unique |
-            tostring
+            unique
           ')
           echo "matrix=${CHANGES}" >> $GITHUB_OUTPUT
 
   main:
     needs: detect-changes
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 23.x]
     steps:
       # Checkout the repository
       - uses: actions/checkout@v4
@@ -58,7 +54,7 @@ jobs:
       # Cache node_modules
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 23.x
           cache: 'pnpm'
 
       # Setup .npmrc file to publish to npm
@@ -74,7 +70,7 @@ jobs:
       - name: Publishing changed packages
         if: needs.detect-changes.outputs.matrix != '[]'
         run: |
-          for project in $(echo '${{needs.detect-changes.outputs.matrix}}' | jq -r '.[]'); do
+          echo '${{needs.detect-changes.outputs.matrix}}' | jq -r '.[]' | while read project; do
             echo "Publish @sao-icons/$project"
             pnpm exec nx run $project:auto
           done

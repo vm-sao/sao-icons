@@ -36,8 +36,7 @@ jobs:
             map(
               capture("^packages/(?<package>[^/]+)").package
             ) |
-            unique |
-            tostring
+            unique
           ')
           echo "matrix=${CHANGES}" >> $GITHUB_OUTPUT
 
@@ -75,7 +74,7 @@ jobs:
       - name: Run project CI
         if: needs.detect-changes.outputs.matrix != '[]'
         run: |
-          for project in $(echo '${{needs.detect-changes.outputs.matrix}}' | jq -r '.[]'); do
+          echo '${{needs.detect-changes.outputs.matrix}}' | jq -r '.[]' | while read project; do
             echo "Running CI for packages/$project"
             pnpm exec nx run $project:ci
           done
