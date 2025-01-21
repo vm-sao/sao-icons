@@ -52,17 +52,31 @@ jobs:
           fi
 
           # Sanitize and convert to JSON array for GitHub Actions
-          affected_json=$(echo "$affected_dirs" | tr ' ' '\n' | jq -R . | jq -s . | tr -d '\n' | tr -d '\r')
+          affected_json=$(echo "$affected_dirs" | tr ' ' '\n' | jq -R . | jq -s .)
           echo "affected_projects=$affected_json" >> $GITHUB_ENV
           echo "Affected Projects: $affected_json"
+
 
       # Publish affected projects
       - name: Publish
         if: env.affected_projects != '[]'
         run: |
-          echo "Affected Projects: ${{ env.affected_projects }}"
-          cleaned_projects=$(echo "${{ env.affected_projects }}" | jq -c) # Sanitize input
+          echo "Raw Affected Projects: ${{ env.affected_projects }}"
+
+          # Ensure that the affected_projects variable is correctly formatted
+          cleaned_projects=$(echo "${{ env.affected_projects }}" | jq -c)
+
+          # Debug output to check cleaned_projects
+          echo "Cleaned Affected Projects: $cleaned_projects"
+
+          # Check for empty cleaned_projects
+          if [ "$cleaned_projects" == "[]" ]; then
+            echo "No cleaned projects to publish."
+            exit 0
+          fi
+
+          # Process each project
           for project in $(echo "$cleaned_projects" | jq -r '.[]'); do
-            echo "Publish @sao-ui/$project"
+            echo "Publishing @sao-ui/$project"
             pnpm exec nx run "$project:auto"
           done
