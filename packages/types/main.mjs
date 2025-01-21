@@ -56,5 +56,5 @@ import { fileURLToPath } from 'url';
   });
   ts += `export type SaoIconType =\n${objectNames}${iconNames.replace(/\n$/, ';')}\n`;
 
-  writeFileSync(join(outputDir, 'index.ts'), ts);
+  writeFileSync(join(outputDir, 'index.d.ts'), ts);
 })();

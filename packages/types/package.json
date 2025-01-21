@@ -1,6 +1,6 @@
 {
   "name": "@sao-icons/types",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": false,
   "author": "Elias Vinh",
   "license": "MIT",
@@ -23,5 +23,8 @@
   "exports": {
     ".": "./index.ts",
     "./index": "./index.ts"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
   }
 }
