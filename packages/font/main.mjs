@@ -21,6 +21,10 @@ function getAllSvgFiles() {
       files,
       fontName,
       formats: ['woff', 'ttf', 'svg', 'eot'],
+      normalize: true, // Ensures correct scaling
+      fontHeight: 1000, // Prevents distortion
+      centerHorizontally: true,
+      centerVertically: true,
       glyphTransformFn: obj => {
         // Extract folder structure: svgs/{outlined|filled}/(category)/icon.svg
         const parts = obj['path']
@@ -47,7 +51,7 @@ function getAllSvgFiles() {
   src: url("${fontPath}.eot?#iefix") format("embedded-opentype"),
        url("${fontPath}.ttf?${timestamp}") format("truetype"),
        url("${fontPath}.woff?${timestamp}") format("woff"),
-       url("${fontPath}.svg?${timestamp}#sao") format("svg");
+       url("${fontPath}.svg?${timestamp}#sao-icon") format("svg");
 }
 
 .${fontName} {
@@ -59,6 +63,7 @@ function getAllSvgFiles() {
   font-variant: normal;
   text-transform: none;
   line-height: 1;
+  font-size: var(--sao-icon-size, 24px);
 
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
@@ -77,13 +82,12 @@ ${result.glyphsData
       if (['woff', 'ttf', 'svg', 'eot'].includes(ext)) {
         const filePath = join(join(dest, 'fonts'), `${fontName}.${ext}`);
         writeFileSync(filePath, content);
-        console.log(`📄 Saved: ${filePath}`);
       }
     });
 
     // 🔽 Write CSS 🔽
     const cssPath = join(dest, 'index.css');
-    writeFileSync(cssPath, cssTemplate.trim());
+    writeFileSync(cssPath, cssTemplate.trim().replace(/\n\s*\n/g, '\n'));
     console.log(`🎨 Saved CSS: ${cssPath}`);
 
     console.log('✅ Icon font generated successfully!');
