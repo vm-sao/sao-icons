@@ -50,6 +50,15 @@ function getAllSvgFiles() {
        url("${fontPath}.svg?${timestamp}#sao") format("svg");
 }
 
+:root {
+ ${result.glyphsData
+        .map(
+          glyph =>
+            `\t--sao-icon-${glyph.metadata.name.split('_').join('-')}: "\\${glyph.metadata.unicode[0].codePointAt(0).toString(16)}";`
+        )
+        .join('\n')}
+}
+
 .sao-icon {
   display: inline-block;
   font-family: "sao";
@@ -66,7 +75,10 @@ function getAllSvgFiles() {
 ${result.glyphsData
   .map(
     glyph =>
-      `.sao-icon-${glyph.metadata.name}::before { content: "\\${glyph.metadata.unicode[0].codePointAt(0).toString(16)}"; }`
+    {
+      const name = `sao-icon-${glyph.metadata.name.split('_').join('-')}`;
+      return `.${name}::before { content: var(--${name}); }`;
+    }
   )
   .join('\n')}
 `;
