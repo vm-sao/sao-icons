@@ -15,10 +15,11 @@ function getAllSvgFiles() {
   try {
     const files = await getAllSvgFiles();
     const dest = join(__dirname, '../../', 'dist/packages/font');
+    const fontName = 'sao-icon';
 
     const result = await webfont({
       files,
-      fontName: 'sao-icon',
+      fontName,
       formats: ['woff', 'ttf', 'svg', 'eot'],
       glyphTransformFn: obj => {
         // Extract folder structure: svgs/{outlined|filled}/(category)/icon.svg
@@ -34,11 +35,11 @@ function getAllSvgFiles() {
     });
 
     const timestamp = Date.now(); // Add a timestamp to prevent caching
-    const fontPath = './fonts/sao';
+    const fontPath = `./fonts/${fontName}`;
 
     const cssTemplate = `
 @font-face {
-  font-family: "sao";
+  font-family: "${fontName}";
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -49,9 +50,9 @@ function getAllSvgFiles() {
        url("${fontPath}.svg?${timestamp}#sao") format("svg");
 }
 
-.sao-icon {
+.${fontName} {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'sao' !important;
+  font-family: '${fontName}' !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -67,14 +68,14 @@ function getAllSvgFiles() {
 ${result.glyphsData
   .map(
     glyph =>
-      `.sao-icon-${glyph.metadata.name.split('_').join('-')}::before { content: "\\${glyph.metadata.unicode[0].codePointAt(0).toString(16)}"; }`
+      `.${fontName}-${glyph.metadata.name.split('_').join('-')}::before { content: "\\${glyph.metadata.unicode[0].codePointAt(0).toString(16)}"; }`
   )
   .join('\n')}
 `;
 
     Object.entries(result).forEach(([ext, content]) => {
       if (['woff', 'ttf', 'svg', 'eot'].includes(ext)) {
-        const filePath = join(join(dest, 'fonts'), `sao.${ext}`);
+        const filePath = join(join(dest, 'fonts'), `${fontName}.${ext}`);
         writeFileSync(filePath, content);
         console.log(`📄 Saved: ${filePath}`);
       }
