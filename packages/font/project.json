@@ -1,18 +1,19 @@
 {
-  "name": "types",
+  "name": "font",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/types",
+  "sourceRoot": "packages/font",
   "projectType": "library",
-  "tags": ["sao-icons", "types"],
+  "tags": ["sao-icons", "font"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "rm -rf dist/packages/types",
-          "mkdir -p dist/packages/types",
-          "rsync -a --exclude='project.json' --exclude='main.mjs' --exclude='node_modules' packages/types/ dist/packages/types/",
-          "node packages/types/main.mjs"
+          "rm -rf dist/packages/font",
+          "mkdir -p dist/packages/font",
+          "mkdir -p dist/packages/font/fonts",
+          "rsync -a --exclude='project.json' --exclude='main.mjs' packages/font/ dist/packages/font/",
+          "node packages/font/main.mjs"
         ],
         "parallel": false
       }
@@ -21,7 +22,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "cd dist/packages/types && pnpm publish --access public --no-git-checks"
+          "cd dist/packages/font && pnpm publish --access public --no-git-checks"
         ],
         "parallel": false
       }
@@ -30,8 +31,8 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "pnpm nx build types --parallel=false",
-          "pnpm nx publish types --parallel=false"
+          "pnpm nx build font --parallel=false",
+          "pnpm nx publish font --parallel=false"
         ],
         "parallel": false
       }
@@ -40,8 +41,8 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "pnpm nx build types --parallel=false",
-          "pnpm nx publish types --parallel=false --dry-run"
+          "pnpm nx build font --parallel=false",
+          "pnpm nx publish font --parallel=false --dry-run"
         ],
         "parallel": false
       }

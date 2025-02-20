@@ -1,15 +1,15 @@
 {
-  "name": "@sao-icons/types",
-  "version": "0.0.3",
+  "name": "@sao-icons/font",
+  "version": "0.0.1",
   "private": false,
   "author": "Elias Vinh",
   "license": "MIT",
-  "description": "SAO Icons Package for getting typing",
+  "description": "SAO Icons Package for getting font and css",
   "homepage": "https://github.com/vm-sao/sao-icons",
   "repository": {
     "type": "git",
     "url": "https://github.com/vm-sao/sao-icons.git",
-    "directory": "packages/types"
+    "directory": "packages/font"
   },
   "bugs": {
     "url": "https://github.com/vm-sao/sao-icons/issues",
@@ -18,13 +18,12 @@
   "keywords": [
     "vm-sao",
     "sao-icons",
-    "sao-icons-types"
+    "sao-icons-font"
   ],
   "exports": {
-    ".": "./index.ts",
-    "./index": "./index.ts"
-  },
-  "dependencies": {
-    "tslib": "^2.3.0"
+    ".": "./index.css",
+    "./index": "./index.css",
+    "./index.css": "./index.css",
+    "./css": "./index.css"
   }
 }
