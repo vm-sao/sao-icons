@@ -58,6 +58,7 @@ function getAllSvgFiles() {
   font-variant: normal;
   text-rendering: auto;
   line-height: 1;
+  font-size: var(--sao-icon-size, 24px);
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
