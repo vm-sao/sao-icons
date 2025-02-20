@@ -19,7 +19,7 @@ function getAllSvgFiles() {
     const result = await webfont({
       files,
       fontName: 'sao-icon',
-      formats: ['woff2', 'woff', 'ttf', 'svg', 'eot'],
+      formats: ['woff', 'ttf', 'svg', 'eot'],
       glyphTransformFn: obj => {
         // Extract folder structure: svgs/{outlined|filled}/(category)/icon.svg
         const parts = obj['path']
@@ -38,29 +38,30 @@ function getAllSvgFiles() {
 
     const cssTemplate = `
 @font-face {
-  font-display: auto;
   font-family: "sao";
+  font-weight: normal;
   font-style: normal;
-  font-weight: 400;
+  font-display: block;
   src: url("${fontPath}.eot?${timestamp}");
   src: url("${fontPath}.eot?#iefix") format("embedded-opentype"),
-       url("${fontPath}.woff2?${timestamp}") format("woff2"),
-       url("${fontPath}.woff?${timestamp}") format("woff"),
        url("${fontPath}.ttf?${timestamp}") format("truetype"),
+       url("${fontPath}.woff?${timestamp}") format("woff"),
        url("${fontPath}.svg?${timestamp}#sao") format("svg");
 }
 
 .sao-icon {
-  display: inline-block;
-  font-family: "sao";
-  font-weight: 400;
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'sao' !important;
+  speak: never;
   font-style: normal;
+  font-weight: normal;
   font-variant: normal;
-  text-rendering: auto;
+  text-transform: none;
   line-height: 1;
-  font-size: var(--sao-icon-size, 24px);
-  -moz-osx-font-smoothing: grayscale;
+
+  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ${result.glyphsData
@@ -72,7 +73,7 @@ ${result.glyphsData
 `;
 
     Object.entries(result).forEach(([ext, content]) => {
-      if (['woff', 'woff2', 'ttf', 'svg', 'eot'].includes(ext)) {
+      if (['woff', 'ttf', 'svg', 'eot'].includes(ext)) {
         const filePath = join(join(dest, 'fonts'), `sao.${ext}`);
         writeFileSync(filePath, content);
         console.log(`📄 Saved: ${filePath}`);
