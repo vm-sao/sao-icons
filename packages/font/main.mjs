@@ -78,6 +78,55 @@ ${result.glyphsData
   .join('\n')}
 `;
 
+    const mixinsTemplate = `
+@mixin use-sao-icon-font() {
+  @font-face {
+    font-family: "${fontName}";
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+    src: url("${fontPath}.eot?${timestamp}");
+    src: url("${fontPath}.eot?#iefix") format("embedded-opentype"),
+         url("${fontPath}.ttf?${timestamp}") format("truetype"),
+         url("${fontPath}.woff?${timestamp}") format("woff"),
+         url("${fontPath}.svg?${timestamp}#sao-icon") format("svg");
+  }
+}
+
+@mixin use-sao-icon-font-target() {
+  .${fontName} {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: '${fontName}' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    font-size: var(--sao-icon-size, 24px);
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@mixin use-sao-icon-font-collection() {
+${result.glyphsData
+      .map(
+        glyph =>
+          `\t\t.${fontName}-${glyph.metadata.name.split('_').join('-')}::before { content: "\\${glyph.metadata.unicode[0].codePointAt(0).toString(16)}"; }`
+      )
+      .join('\n')}
+}
+
+@mixin use-sao-icon() {
+  @include use-sao-icon-font();
+  @include use-sao-icon-font-target();
+  @include use-sao-icon-font-collection();
+}
+`;
+
     Object.entries(result).forEach(([ext, content]) => {
       if (['woff', 'ttf', 'svg', 'eot'].includes(ext)) {
         const filePath = join(join(dest, 'fonts'), `${fontName}.${ext}`);
@@ -88,15 +137,9 @@ ${result.glyphsData
     // 🔽 Write CSS 🔽
     const cssPath = join(dest, 'index.css');
     const cssMixinsPath = join(dest, 'mixins.scss');
-    const template = cssTemplate.trim().replace(/\n\s*\n/g, '\n');
-    const mixinsTemplate = `
-@mixin use-sao-icon-font() {
-${template}
-}
-`;
 
-    writeFileSync(cssPath, template);
-    writeFileSync(cssMixinsPath, mixinsTemplate);
+    writeFileSync(cssPath, cssTemplate.trim().replace(/\n\s*\n/g, '\n'));
+    writeFileSync(cssMixinsPath, mixinsTemplate.trim().replace(/\n\s*\n/g, '\n'));
     console.log(`🎨 Saved CSS: ${cssPath}`);
 
     console.log('✅ Icon font generated successfully!');
