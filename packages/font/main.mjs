@@ -87,7 +87,16 @@ ${result.glyphsData
 
     // 🔽 Write CSS 🔽
     const cssPath = join(dest, 'index.css');
-    writeFileSync(cssPath, cssTemplate.trim().replace(/\n\s*\n/g, '\n'));
+    const cssMixinsPath = join(dest, 'mixins.scss');
+    const template = cssTemplate.trim().replace(/\n\s*\n/g, '\n');
+    const mixinsTemplate = `
+@mixin use-sao-icon-font() {
+${template}
+}
+`;
+
+    writeFileSync(cssPath, template);
+    writeFileSync(cssMixinsPath, mixinsTemplate);
     console.log(`🎨 Saved CSS: ${cssPath}`);
 
     console.log('✅ Icon font generated successfully!');

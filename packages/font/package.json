@@ -1,6 +1,6 @@
 {
   "name": "@sao-icons/font",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "private": false,
   "author": "Elias Vinh",
   "license": "MIT",
@@ -24,6 +24,8 @@
     ".": "./index.css",
     "./index": "./index.css",
     "./index.css": "./index.css",
-    "./css": "./index.css"
+    "./css": "./index.css",
+    "./mixins": "./mixins.scss",
+    "./mixins.scss": "./mixins.scss"
   }
 }
