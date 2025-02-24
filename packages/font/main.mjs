@@ -64,6 +64,8 @@ function getAllSvgFiles() {
   text-transform: none;
   line-height: 1;
   font-size: var(--sao-icon-size, 24px);
+  width: var(--sao-icon-size, 24px);
+  height: var(--sao-icon-size, 24px);
 
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
